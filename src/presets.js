@@ -41,7 +41,7 @@ export default {
     id: Date.now(),
     name: 'Cleaning',
     tasks: [
-      { id: 1, name: 'trash', frequency: 'weekly', resetDay: 'Tuesday', resetTime: new Date().setHours(23, 0, 0, 0), completed: false },
+      { id: 1, name: 'Trash', frequency: 'weekly', resetDay: 'Tuesday', resetTime: new Date().setHours(23, 0, 0, 0), completed: false },
     ]
   }]
 };
