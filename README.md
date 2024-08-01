@@ -1,70 +1,73 @@
-# Getting Started with Create React App
+```markdown
+# JUST Daily Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview
 
-## Available Scripts
+JUST Daily Tracker is a React-based web application designed to help users keep track of their regularly occurring tasks in various categories, such as video games and work. The app allows users to create tasks with specific frequencies (hourly, daily, weekly, monthly, or custom), set reset times, and mark tasks as complete. Users can also add, remove, and sort tasks, as well as switch between dark and light modes.
 
-In the project directory, you can run:
+## Features
 
-### `npm start`
+- **Task Management**: Create, edit, and delete tasks with custom frequencies.
+- **Category Management**: Add and remove categories to organize tasks.
+- **Sorting**: Sort tasks by name or time left until reset.
+- **Dark Mode**: Toggle between dark and light modes.
+- **Persistent State**: Saves user settings, tasks, and preferences in local storage.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Installation
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+1. **Clone the Repository**:
+   ```bash
+   git clone https://github.com/JUSTGameStudios/just-dailies.git
+   cd just-dailies
+   ```
 
-### `npm test`
+2. **Install Dependencies**:
+   ```bash
+   npm install
+   ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. **Start the Development Server**:
+   ```bash
+   npm start
+   ```
 
-### `npm run build`
+## Deployment
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+To deploy the app to GitHub Pages, follow these steps:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. **Build the App**:
+   ```bash
+   npm run build
+   ```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+2. **Deploy to GitHub Pages**:
+   ```bash
+   npm run deploy
+   ```
 
-### `npm run eject`
+## Usage
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+1. **Create Tasks**: Add new tasks by specifying the task name, frequency, and reset time.
+2. **Manage Categories**: Organize tasks into categories and switch between them.
+3. **Complete Tasks**: Mark tasks as complete and optionally filter completed tasks.
+4. **Settings**: Toggle dark mode and manage other settings.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Contributing
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Contributions are welcome! Please fork the repository and submit pull requests for any improvements or bug fixes.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## License
 
-## Learn More
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Acknowledgments
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- This app uses [React](https://reactjs.org/) for the front-end framework.
+- Deployment is managed with [GitHub Pages](https://pages.github.com/).
 
-### Code Splitting
+## Contact
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+For any inquiries or issues, please contact us at [your-email@example.com].
+```
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Copy and paste this into your `README.md` file in the root directory of your project. Adjust the contact email and any other details as necessary.
