@@ -1,4 +1,3 @@
-```markdown
 # JUST Daily Tracker
 
 ## Overview
