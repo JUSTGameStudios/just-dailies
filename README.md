@@ -12,38 +12,6 @@ JUST Daily Tracker is a React-based web application designed to help users keep 
 - **Dark Mode**: Toggle between dark and light modes.
 - **Persistent State**: Saves user settings, tasks, and preferences in local storage.
 
-## Installation
-
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/JUSTGameStudios/just-dailies.git
-   cd just-dailies
-   ```
-
-2. **Install Dependencies**:
-   ```bash
-   npm install
-   ```
-
-3. **Start the Development Server**:
-   ```bash
-   npm start
-   ```
-
-## Deployment
-
-To deploy the app to GitHub Pages, follow these steps:
-
-1. **Build the App**:
-   ```bash
-   npm run build
-   ```
-
-2. **Deploy to GitHub Pages**:
-   ```bash
-   npm run deploy
-   ```
-
 ## Usage
 
 1. **Create Tasks**: Add new tasks by specifying the task name, frequency, and reset time.
@@ -66,7 +34,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 ## Contact
 
-For any inquiries or issues, please contact us at [your-email@example.com].
-```
+For any inquiries or issues, please dont.
 
-Copy and paste this into your `README.md` file in the root directory of your project. Adjust the contact email and any other details as necessary.
