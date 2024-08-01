@@ -34,7 +34,7 @@ function App() {
   const [moveCompletedToBottom, setMoveCompletedToBottom] = useState(false);
   const [darkMode, setDarkMode] = useState(() => {
     const savedMode = localStorage.getItem('darkMode');
-    return savedMode ? JSON.parse(savedMode) : false;
+    return savedMode ? JSON.parse(savedMode) : true;
   });
   const [settingsCollapsed, setSettingsCollapsed] = useState(() => {
     const savedState = localStorage.getItem('settingsCollapsed');
