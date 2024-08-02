@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/just-dailies/static/css/main.e30650f3.css",
-    "main.js": "/just-dailies/static/js/main.fabb09f9.js",
+    "main.css": "/just-dailies/static/css/main.2ad5ae1d.css",
+    "main.js": "/just-dailies/static/js/main.0ecd450a.js",
     "index.html": "/just-dailies/index.html",
-    "main.e30650f3.css.map": "/just-dailies/static/css/main.e30650f3.css.map",
-    "main.fabb09f9.js.map": "/just-dailies/static/js/main.fabb09f9.js.map"
+    "main.2ad5ae1d.css.map": "/just-dailies/static/css/main.2ad5ae1d.css.map",
+    "main.0ecd450a.js.map": "/just-dailies/static/js/main.0ecd450a.js.map"
   },
   "entrypoints": [
-    "static/css/main.e30650f3.css",
-    "static/js/main.fabb09f9.js"
+    "static/css/main.2ad5ae1d.css",
+    "static/js/main.0ecd450a.js"
   ]
 }
