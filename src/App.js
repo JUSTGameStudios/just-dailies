@@ -147,7 +147,7 @@ function App() {
     <Container>
       <Row className="justify-content-center align-items-center mb-4">
         <Col>
-          <h1 className="text-center">JUST Daily Tracker</h1>
+          <h1 className="app-heading">JUST Daily Tracker</h1>
         </Col>
       </Row>
       <Row>
