@@ -21,7 +21,7 @@ function Task({ task, completeTask, removeTask }) {
   return (
     <Card className={`mb-3 ${task.completed ? 'completed-task' : ''}`}>
       <Card.Body>
-        <Row>
+        <Row className="task-card-row">
           <Col xs="auto" className="d-flex align-items-center">
             <Form.Check
               type="checkbox"
@@ -32,13 +32,19 @@ function Task({ task, completeTask, removeTask }) {
             />
           </Col>
           <Col>
-            <Card.Title>{task.name}</Card.Title>
-            <Card.Text>
+            <Card.Title className="mb-1">{task.name}</Card.Title>
+            <Card.Text className="mb-0 text-muted">
               Reset in: {formatTimeLeft(timeLeft)}
             </Card.Text>
           </Col>
           <Col xs="auto" className="d-flex align-items-center">
-            <Button variant="danger" size="sm" onClick={() => removeTask(task.id)} className="btn-remove">
+            <Button 
+              variant="danger" 
+              size="sm" 
+              onClick={() => removeTask(task.id)} 
+              className="btn-remove"
+              aria-label={`Remove task: ${task.name}`}
+            >
               &times;
             </Button>
           </Col>

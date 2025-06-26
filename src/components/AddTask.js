@@ -209,8 +209,8 @@ function AddTask({ addTask }) {
       {frequency === 'custom' && (
         <Form.Group controlId="formCustomFrequency">
           <Form.Label>Custom Frequency</Form.Label>
-          <Row>
-            <Col>
+          <Row className="custom-frequency-row">
+            <Col xs={12} sm={4}>
               <Form.Label>Days</Form.Label>
               <Form.Control
                 type="number"
@@ -222,7 +222,7 @@ function AddTask({ addTask }) {
                 isInvalid={showErrors && errors.customFrequency}
               />
             </Col>
-            <Col>
+            <Col xs={12} sm={4}>
               <Form.Label>Hours</Form.Label>
               <Form.Control
                 type="number"
@@ -234,7 +234,7 @@ function AddTask({ addTask }) {
                 isInvalid={showErrors && errors.customFrequency}
               />
             </Col>
-            <Col>
+            <Col xs={12} sm={4}>
               <Form.Label>Minutes</Form.Label>
               <Form.Control
                 type="number"
