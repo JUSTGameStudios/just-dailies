@@ -1,6 +1,7 @@
 {
   "short_name": "JUSTTracker",
   "name": "JUST Daily Tracker",
+  "description": "Lightweight offline task manager for tracking daily, weekly, and custom recurring tasks",
   "icons": [
     {
       "src": "favicon-32x32.png",
@@ -15,21 +16,29 @@
     {
       "src": "apple-touch-icon.png",
       "type": "image/png",
-      "sizes": "180x180"
+      "sizes": "180x180",
+      "purpose": "maskable"
     },
     {
       "src": "android-chrome-192x192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "android-chrome-512x512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ],
-  "start_url": ".",
+  "start_url": "./",
   "display": "standalone",
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff"
+  "orientation": "portrait-primary",
+  "theme_color": "#007bff",
+  "background_color": "#ffffff",
+  "categories": ["productivity", "utilities"],
+  "lang": "en",
+  "scope": "./",
+  "prefer_related_applications": false
 }
