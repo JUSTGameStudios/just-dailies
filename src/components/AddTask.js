@@ -27,14 +27,19 @@ function AddTask({ addTask }) {
       newErrors.name = 'Task name must be less than 100 characters';
     }
 
-    // Validate reset time
-    if (!resetTime) {
+    // Validate reset time (not needed for preset frequencies)
+    if (!['5min', '15min', '30min'].includes(frequency) && !resetTime) {
       newErrors.resetTime = 'Reset time is required';
     }
 
-    // Validate reset date for monthly and custom frequencies
-    if ((frequency === 'monthly' || frequency === 'custom') && !resetDate) {
-      newErrors.resetDate = 'Reset date is required for this frequency';
+    // Validate reset date for monthly and custom frequencies only
+    if (frequency === 'monthly' && !resetDate) {
+      newErrors.resetDate = 'Reset date is required for monthly frequency';
+    }
+    
+    // For custom frequency, reset date is optional - if not provided, it starts from now
+    if (frequency === 'custom' && !resetDate) {
+      // This is okay - we'll use current time as the base
     }
 
     // Validate custom frequency
@@ -88,40 +93,61 @@ function AddTask({ addTask }) {
     }
 
     try {
-      const resetTimeParts = resetTime.split(':');
-      const resetDateParts = resetDate ? resetDate.split('-') : [new Date().getFullYear(), new Date().getMonth() + 1, new Date().getDate()];
-      
-      const nextReset = new Date(
-        resetDateParts[0],
-        resetDateParts[1] - 1,
-        resetDateParts[2],
-        resetTimeParts[0],
-        resetTimeParts[1]
-      );
-
-      // Validate the constructed date
-      if (isNaN(nextReset.getTime())) {
-        setErrors({ general: 'Invalid date/time combination' });
-        return;
-      }
-
+      const now = new Date();
+      let nextReset;
+      let actualFrequency = frequency;
       let customFrequencyInMs = 0;
-      if (frequency === 'custom') {
-        customFrequencyInMs =
-          customFrequency.days * 24 * 60 * 60 * 1000 +
-          customFrequency.hours * 60 * 60 * 1000 +
-          customFrequency.minutes * 60 * 1000;
+
+      // Handle preset frequencies
+      if (frequency === '5min') {
+        actualFrequency = 'custom';
+        customFrequencyInMs = 5 * 60 * 1000; // 5 minutes in milliseconds
+        nextReset = new Date(now.getTime() + customFrequencyInMs);
+      } else if (frequency === '15min') {
+        actualFrequency = 'custom';
+        customFrequencyInMs = 15 * 60 * 1000; // 15 minutes in milliseconds
+        nextReset = new Date(now.getTime() + customFrequencyInMs);
+      } else if (frequency === '30min') {
+        actualFrequency = 'custom';
+        customFrequencyInMs = 30 * 60 * 1000; // 30 minutes in milliseconds
+        nextReset = new Date(now.getTime() + customFrequencyInMs);
+      } else {
+        // Handle regular frequencies
+        const resetTimeParts = resetTime.split(':');
+        const resetDateParts = resetDate ? resetDate.split('-') : [now.getFullYear(), now.getMonth() + 1, now.getDate()];
+        
+        nextReset = new Date(
+          resetDateParts[0],
+          resetDateParts[1] - 1,
+          resetDateParts[2],
+          resetTimeParts[0],
+          resetTimeParts[1]
+        );
+
+        // Validate the constructed date
+        if (isNaN(nextReset.getTime())) {
+          setErrors({ general: 'Invalid date/time combination' });
+          return;
+        }
+
+        if (frequency === 'custom') {
+          customFrequencyInMs =
+            customFrequency.days * 24 * 60 * 60 * 1000 +
+            customFrequency.hours * 60 * 60 * 1000 +
+            customFrequency.minutes * 60 * 1000;
+        }
       }
 
       const newTask = {
         id: Date.now(),
         name: name.trim(),
-        frequency,
+        frequency: actualFrequency,
         resetTime: nextReset.getTime(),
         resetDay: frequency.includes('weekly') ? resetDay : '',
-        resetDate: (frequency === 'monthly' || frequency === 'custom') ? resetDate : '',
+        resetDate: (frequency === 'monthly') ? resetDate : '',
         customFrequency: customFrequencyInMs,
         completed: false,
+        lastReset: null, // Will be set when task is first completed
       };
 
       addTask(newTask);
@@ -165,6 +191,9 @@ function AddTask({ addTask }) {
       <Form.Group controlId="formFrequency">
         <Form.Label>Frequency</Form.Label>
         <Form.Control as="select" value={frequency} onChange={(e) => setFrequency(e.target.value)}>
+          <option value="5min">Every 5 minutes</option>
+          <option value="15min">Every 15 minutes</option>
+          <option value="30min">Every 30 minutes</option>
           <option value="hourly">Hourly</option>
           <option value="daily">Daily</option>
           <option value="weekly">Weekly</option>
@@ -188,7 +217,7 @@ function AddTask({ addTask }) {
         </Form.Group>
       )}
 
-      {(frequency === 'monthly' || frequency === 'custom') && (
+      {frequency === 'monthly' && (
         <Form.Group controlId="formResetDate">
           <Form.Label>Reset Date</Form.Label>
           <Form.Control 
@@ -255,21 +284,23 @@ function AddTask({ addTask }) {
         </Form.Group>
       )}
 
-      <Form.Group controlId="formResetTime">
-        <Form.Label>Reset Time</Form.Label>
-        <Form.Control 
-          type="time" 
-          value={resetTime} 
-          onChange={(e) => setResetTime(e.target.value)} 
-          isInvalid={showErrors && errors.resetTime}
-          required 
-        />
-        {showErrors && errors.resetTime && (
-          <Form.Control.Feedback type="invalid">
-            {errors.resetTime}
-          </Form.Control.Feedback>
-        )}
-      </Form.Group>
+      {!['5min', '15min', '30min'].includes(frequency) && (
+        <Form.Group controlId="formResetTime">
+          <Form.Label>Reset Time</Form.Label>
+          <Form.Control 
+            type="time" 
+            value={resetTime} 
+            onChange={(e) => setResetTime(e.target.value)} 
+            isInvalid={showErrors && errors.resetTime}
+            required 
+          />
+          {showErrors && errors.resetTime && (
+            <Form.Control.Feedback type="invalid">
+              {errors.resetTime}
+            </Form.Control.Feedback>
+          )}
+        </Form.Group>
+      )}
 
       <Button variant="primary" type="submit" className="mt-2">
         Add Task

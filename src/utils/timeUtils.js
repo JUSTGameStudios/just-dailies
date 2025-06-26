@@ -85,11 +85,14 @@ export function calculateNextResetTime(task, currentTime = new Date()) {
       break;
 
     case 'custom':
-      // For custom frequency, add the custom interval to the last reset time
+      // For custom frequency, calculate next reset from the task's last completion/creation time
       const customFrequencyMs = task.customFrequency || 0;
-      nextReset = new Date(task.resetTime);
       
-      // Keep adding the custom frequency until we get a future time
+      // If task has a lastReset time, use that as the base, otherwise use resetTime
+      const baseTime = task.lastReset ? new Date(task.lastReset) : new Date(task.resetTime);
+      nextReset = new Date(baseTime.getTime() + customFrequencyMs);
+      
+      // If the calculated time is in the past, keep adding intervals until we get a future time
       while (nextReset <= now) {
         nextReset = new Date(nextReset.getTime() + customFrequencyMs);
       }
@@ -188,12 +191,18 @@ export function shouldAutoReset(task, currentTime = new Date()) {
  * @returns {Object} Updated task object
  */
 export function resetTask(task, currentTime = new Date()) {
-  const nextResetTime = calculateNextResetTime(task, currentTime);
-  
-  return {
+  const updatedTask = {
     ...task,
     completed: false,
-    resetTime: nextResetTime.getTime(),
     lastReset: currentTime.getTime()
   };
+  
+  // For custom frequency tasks, we keep the original resetTime but update lastReset
+  // For other frequencies, we can update resetTime to the next occurrence
+  if (task.frequency !== 'custom') {
+    const nextResetTime = calculateNextResetTime(updatedTask, currentTime);
+    updatedTask.resetTime = nextResetTime.getTime();
+  }
+  
+  return updatedTask;
 }

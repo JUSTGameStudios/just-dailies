@@ -91,8 +91,8 @@ function App() {
       }
     };
 
-    // Check for task resets every minute
-    const resetInterval = setInterval(checkAndResetTasks, 60000);
+    // Check for task resets every 30 seconds
+    const resetInterval = setInterval(checkAndResetTasks, 30000);
     
     // Also check immediately on component mount
     checkAndResetTasks();
@@ -169,6 +169,81 @@ function App() {
     const [removed] = game.tasks.splice(startIndex, 1);
     game.tasks.splice(endIndex, 0, removed);
     setCategories({ ...categories });
+  };
+
+  const exportData = () => {
+    const dataToExport = {
+      categories,
+      settings: {
+        darkMode,
+        categoriesCollapsed,
+        gamesCollapsed,
+        addTaskCollapsed,
+        settingsCollapsed,
+        showCompleted,
+        moveCompletedToBottom,
+        sortMethod,
+        sortOrder,
+        selectedCategory,
+        selectedGame
+      },
+      exportDate: new Date().toISOString(),
+      version: '1.0'
+    };
+
+    const dataStr = JSON.stringify(dataToExport, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `just-dailies-backup-${new Date().toISOString().split('T')[0]}.json`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const importData = (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const importedData = JSON.parse(e.target.result);
+        
+        // Validate the imported data structure
+        if (importedData.categories && typeof importedData.categories === 'object') {
+          setCategories(importedData.categories);
+          
+          // Restore settings if available
+          if (importedData.settings) {
+            const settings = importedData.settings;
+            if (typeof settings.darkMode === 'boolean') setDarkMode(settings.darkMode);
+            if (typeof settings.categoriesCollapsed === 'boolean') setCategoriesCollapsed(settings.categoriesCollapsed);
+            if (typeof settings.gamesCollapsed === 'boolean') setGamesCollapsed(settings.gamesCollapsed);
+            if (typeof settings.addTaskCollapsed === 'boolean') setAddTaskCollapsed(settings.addTaskCollapsed);
+            if (typeof settings.settingsCollapsed === 'boolean') setSettingsCollapsed(settings.settingsCollapsed);
+            if (typeof settings.showCompleted === 'boolean') setShowCompleted(settings.showCompleted);
+            if (typeof settings.moveCompletedToBottom === 'boolean') setMoveCompletedToBottom(settings.moveCompletedToBottom);
+            if (settings.sortMethod) setSortMethod(settings.sortMethod);
+            if (settings.sortOrder) setSortOrder(settings.sortOrder);
+            if (settings.selectedCategory && importedData.categories[settings.selectedCategory]) {
+              setSelectedCategory(settings.selectedCategory);
+            }
+          }
+          
+          alert('Data imported successfully!');
+        } else {
+          alert('Invalid backup file format.');
+        }
+      } catch (error) {
+        alert('Error importing data. Please check the file format.');
+      }
+    };
+    reader.readAsText(file);
+    // Reset the input so the same file can be imported again
+    event.target.value = '';
   };
 
   const toggleSortOrder = () => {
@@ -286,10 +361,34 @@ function App() {
               </h2>
             </Card.Header>
             {!settingsCollapsed && (
-              <Card.Body className="text-center">
-                <Button variant="link" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle Dark Mode">
-                  {darkMode ? <FiSun /> : <FiMoon />}
-                </Button>
+              <Card.Body>
+                <div className="text-center mb-3">
+                  <Button variant="link" onClick={() => setDarkMode(!darkMode)} aria-label="Toggle Dark Mode">
+                    {darkMode ? <FiSun /> : <FiMoon />}
+                  </Button>
+                </div>
+                <div className="d-flex flex-column gap-2">
+                  <Button variant="outline-primary" size="sm" onClick={exportData}>
+                    Export Data
+                  </Button>
+                  <div>
+                    <input
+                      type="file"
+                      accept=".json"
+                      onChange={importData}
+                      style={{ display: 'none' }}
+                      id="import-file"
+                    />
+                    <Button 
+                      variant="outline-secondary" 
+                      size="sm" 
+                      onClick={() => document.getElementById('import-file').click()}
+                      className="w-100"
+                    >
+                      Import Data
+                    </Button>
+                  </div>
+                </div>
               </Card.Body>
             )}
           </Card>
