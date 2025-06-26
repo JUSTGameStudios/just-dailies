@@ -1,4 +1,4 @@
-export default {
+const presets = {
   Game: [
     {
       id: Date.now(),
@@ -45,3 +45,5 @@ export default {
     ]
   }]
 };
+
+export default presets;

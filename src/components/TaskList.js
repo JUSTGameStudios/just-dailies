@@ -1,35 +1,12 @@
 import React from 'react';
 import Task from './Task';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { calculateTimeLeft } from '../utils/timeUtils';
 
 function TaskList({ tasks, completeTask, removeTask, sortMethod, sortOrder, reorderTasks, showCompleted, moveCompletedToBottom }) {
-  const calculateTimeLeft = (task) => {
-    const now = new Date();
-    let nextReset = new Date(task.resetTime);
-
-    if (task.frequency === 'custom') {
-      const customFrequencyInMs = task.customFrequency;
-      nextReset = new Date(nextReset.getTime() + customFrequencyInMs);
-    } else if (task.frequency === 'weekly') {
-      const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-      const dayIndex = daysOfWeek.indexOf(task.resetDay);
-      nextReset = new Date(now);
-      nextReset.setDate(now.getDate() + ((7 - now.getDay() + dayIndex) % 7));
-      nextReset.setHours(new Date(task.resetTime).getHours(), new Date(task.resetTime).getMinutes(), 0, 0);
-      if (nextReset <= now) {
-        nextReset.setDate(nextReset.getDate() + 7);
-      }
-    } else if (task.frequency === 'monthly') {
-      nextReset.setMonth(now.getMonth() + 1);
-    } else {
-      // daily or hourly
-      if (nextReset <= now) {
-        nextReset.setDate(now.getDate() + 1);
-      }
-    }
-
-    const diff = nextReset - now;
-    return diff;
+  const getTaskTimeLeft = (task) => {
+    const timeLeft = calculateTimeLeft(task);
+    return timeLeft.total;
   };
 
   const sortedTasks = [...tasks];
@@ -37,7 +14,7 @@ function TaskList({ tasks, completeTask, removeTask, sortMethod, sortOrder, reor
   if (sortMethod === 'name') {
     sortedTasks.sort((a, b) => a.name.localeCompare(b.name));
   } else if (sortMethod === 'timeLeft') {
-    sortedTasks.sort((a, b) => calculateTimeLeft(a) - calculateTimeLeft(b));
+    sortedTasks.sort((a, b) => getTaskTimeLeft(a) - getTaskTimeLeft(b));
   }
 
   if (sortOrder === 'desc') {

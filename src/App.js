@@ -4,6 +4,7 @@ import { FiChevronDown, FiChevronRight, FiArrowUp, FiArrowDown, FiMoon, FiSun } 
 import TaskList from './components/TaskList';
 import AddTask from './components/AddTask';
 import presets from './presets.js';
+import { shouldAutoReset, resetTask } from './utils/timeUtils';
 
 const presetCategories = presets;
 
@@ -65,6 +66,39 @@ function App() {
   useEffect(() => {
     localStorage.setItem('settingsCollapsed', JSON.stringify(settingsCollapsed));
   }, [settingsCollapsed]);
+
+  // Auto-reset tasks when their time expires
+  useEffect(() => {
+    const checkAndResetTasks = () => {
+      let hasChanges = false;
+      const updatedCategories = { ...categories };
+
+      Object.keys(updatedCategories).forEach(categoryKey => {
+        updatedCategories[categoryKey] = updatedCategories[categoryKey].map(game => ({
+          ...game,
+          tasks: game.tasks.map(task => {
+            if (task.completed && shouldAutoReset(task)) {
+              hasChanges = true;
+              return resetTask(task);
+            }
+            return task;
+          })
+        }));
+      });
+
+      if (hasChanges) {
+        setCategories(updatedCategories);
+      }
+    };
+
+    // Check for task resets every minute
+    const resetInterval = setInterval(checkAndResetTasks, 60000);
+    
+    // Also check immediately on component mount
+    checkAndResetTasks();
+
+    return () => clearInterval(resetInterval);
+  }, [categories]);
 
   const addCategory = () => {
     if (newCategoryName && !categories[newCategoryName]) {
